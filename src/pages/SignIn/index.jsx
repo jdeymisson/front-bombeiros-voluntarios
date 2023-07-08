@@ -25,6 +25,7 @@ export const SignIn = () => {
                 />
 
                 <ButtonComponent title="Entrar" />
+                <a>Crie sua conta</a>
             </Form>
         </Container>
     );

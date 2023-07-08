@@ -24,9 +24,9 @@ export const Input = styled.input`
     border-radius: .8rem;
     height: 4.8rem;
 
-    font-size: 1.6rem;
+    font-size: 1.4rem;
 
     &::placeholder{
-        color: ${({ theme }) => theme.COLORS.WHITE_100};
+        color: #ddd;
     }
 `;

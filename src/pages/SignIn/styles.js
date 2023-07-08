@@ -1,35 +1,39 @@
 import { styled } from "styled-components";
 
 export const Container = styled.div`
-    width: 80%;
+    width: 100%;
     height: 100vh;
 
-    background: ${({ theme }) => theme.COLORS.WHITE};
+    background: ${({ theme }) => theme.COLORS.GRAY};
 
     margin: 0 auto;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14rem
+    gap: 14rem;
+
+    padding: 1.6rem;
+
+    @media (max-width: 90rem) {
+        gap: 1rem
+    }
 `;
 
 export const Logo = styled.div`
     text-align: center;
-
-
-    width: min(80%, 44rem);
+    > img {
+        width: min(49rem, 50vw);
+    }
 `
-
 export const Form = styled.form`
     > h2 {
-        font-size: 3.2rem;
+        font-size: 3rem;
         text-align: center;
         color: ${({ theme }) => theme.COLORS.WHITE};
     }
 
-    flex: 1;
-    height: 46rem;
+    width: min(40rem, 50vw);
     max-width: 46rem;
 
     display: flex;
@@ -38,9 +42,14 @@ export const Form = styled.form`
     align-items: center;
     gap: 3.2rem;
 
-    padding: 6.4rem;
+    padding: 4rem;
 
     background: ${({ theme }) => theme.COLORS.RED};
 
     border-radius: 1.6rem;
+
+    > a {
+        font-size: 1.4rem;
+        color: ${({ theme }) => theme.COLORS.WHITE};
+    }
 `
