@@ -1,8 +1,8 @@
-import { useState } from "react"
+import { SignIn } from "./pages/SignIn";
 
 function App() {
   return(
-    <div>Hello Bombeiros!</div>
+    <SignIn />
   );
 };
 
