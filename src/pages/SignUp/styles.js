@@ -29,12 +29,13 @@ export const Form = styled.form`
     }
 
     width: min(40rem, 50vw);
+    height: 80%;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 3.2rem;
+    gap: 1rem;
 
     padding: 3rem 4rem;
 

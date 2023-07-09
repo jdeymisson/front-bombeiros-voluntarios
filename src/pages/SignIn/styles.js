@@ -14,10 +14,6 @@ export const Container = styled.div`
     gap: 14rem;
 
     padding: 1.6rem;
-
-    @media (max-width: 90rem) {
-        gap: 1rem
-    }
 `;
 
 export const Logo = styled.div`
@@ -34,15 +30,15 @@ export const Form = styled.form`
     }
 
     width: min(40rem, 50vw);
-    max-width: 46rem;
+    height: 64%;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 3.2rem;
+    gap: 1.6em;
 
-    padding: 4rem;
+    padding: 2rem 4rem;
 
     background: ${({ theme }) => theme.COLORS.RED};
 

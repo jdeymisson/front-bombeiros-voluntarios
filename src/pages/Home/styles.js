@@ -5,7 +5,7 @@ export const Container = styled.div`
     height: 100vh;
 
     display: grid;
-    grid-template-columns: 26rem auto;
+    grid-template-columns: 20rem auto;
     grid-template-rows: 6.4rem auto 4.2rem;
     grid-template-areas:
     "menu header"
