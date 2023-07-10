@@ -10,8 +10,7 @@ export const Container = styled.div`
     "logo"
     "nav"
     "logout";
-
-    width: ${({ menuAberto }) => (menuAberto ? '100%' : '50%')};;
+    
     height: 100%;
 
     padding: 2.5rem 2rem;
@@ -19,23 +18,44 @@ export const Container = styled.div`
     background: ${({ theme }) => theme.COLORS.RED};
 
     position: relative;
+
+    -webkit-box-shadow: 6px 0px 22px -10px rgba(130,122,130,1);
+    -moz-box-shadow: 6px 0px 22px -10px rgba(130,122,130,1);
+    box-shadow: 6px 0px 22px -10px rgba(130,122,130,1);
 `
 
 export const Logo = styled.div`
     grid-area: logo;
     width: 100%;
     height: 100%;
-    padding: 0 0 0 2.6rem;
+    padding: .8rem;
+
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: .8rem;
 
     background: ${({ theme }) => theme.COLORS.WHITE};
 
     border-radius: .8rem;
 
+    label {
+        flex: 1;
+
+        font-size: 1.4rem;
+        font-weight: 700;
+
+        > p {
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 700;
+            color: ${({ theme }) => theme.COLORS.RED};
+        }
+    }
+
     > img {
         width: 100%;
+        height: 100%;
     }
 `;
 
@@ -58,6 +78,7 @@ export const Nav = styled.nav`
 
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 1.6rem;
 
             height: 4rem;
@@ -115,6 +136,10 @@ export const IconMenu = styled.div`
     -webkit-box-shadow: -2px 0px 9px -4px rgba(0,0,0,0.75);
     -moz-box-shadow: -2px 0px 9px -4px rgba(0,0,0,0.75);
     box-shadow: -2px 0px 9px -4px rgba(0,0,0,0.75);
+
+    transition: all .2s;
+
+        transform: ${({ openmenu }) => openmenu === "false" ? "rotateY(180deg)" : "rotateY(0deg)"};
 
     > img {
         width: 100%;

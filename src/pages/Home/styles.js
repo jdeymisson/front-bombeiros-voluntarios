@@ -5,12 +5,12 @@ export const Container = styled.div`
     height: 100vh;
 
     display: grid;
-    grid-template-columns: 20rem auto;
+    grid-template-columns: ${({ openmenu }) => openmenu === "true" ? '20rem auto' : '10rem auto'};
     grid-template-rows: 6.4rem auto 4.2rem;
     grid-template-areas:
     "menu header"
     "menu content"
     "menu footer";
-
+    transition: width .3s ease;
     background: ${({ theme }) => theme.COLORS.GRAY_100};
 `;
