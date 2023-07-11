@@ -30,7 +30,7 @@ export const Form = styled.form`
     }
 
     width: min(40rem, 50vw);
-    height: 64%;
+    height: 46rem;
 
     display: flex;
     flex-direction: column;

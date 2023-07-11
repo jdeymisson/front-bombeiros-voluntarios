@@ -1,27 +1,11 @@
 import { styled } from "styled-components";
 
-export const Container = styled.div`
-    width: 100%;
-    height: 100vh;
+export const Container = styled.form`
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-    background: ${({ theme }) => theme.COLORS.WHITE};
-
-    margin: 0 auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14rem
-`;
-
-export const Logo = styled.div`
-    text-align: center;
-    > img {
-        width: min(49rem, 50vw);
-    }
-`
-
-export const Form = styled.form`
     > h2 {
         font-size: 3rem;
         text-align: center;
@@ -29,22 +13,22 @@ export const Form = styled.form`
     }
 
     width: min(40rem, 50vw);
-    height: 54rem;
+    height: 52rem;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: 1.6em;
 
-    padding: 3rem 4rem;
+    padding: 2rem 4rem;
 
     background: ${({ theme }) => theme.COLORS.RED};
 
     border-radius: 1.6rem;
-
+    z-index: 100;
     > a {
         font-size: 1.4rem;
         color: ${({ theme }) => theme.COLORS.WHITE};
     }
-`
+`;

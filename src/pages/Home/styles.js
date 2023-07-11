@@ -11,6 +11,6 @@ export const Container = styled.div`
     "menu header"
     "menu content"
     "menu footer";
-    transition: width .3s ease;
+    transition: grid-template-columns 0.3s linear;
     background: ${({ theme }) => theme.COLORS.GRAY_100};
 `;

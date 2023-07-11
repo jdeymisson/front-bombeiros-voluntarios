@@ -12,6 +12,15 @@ export const Container = styled.header`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    > .filter {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        right: 0;
+        background: rgba(0, 0, 0, .5);
+    }
 `; 
 
 export const Profile = styled.div`
