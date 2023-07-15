@@ -12,6 +12,10 @@ export const Container = styled.div`
     gap: 10%;
 
     padding: 1.6rem;
+
+    @media (max-width: 768px){
+        flex-direction: column;
+    }
 `
 
 export const Logo = styled.div`
@@ -21,12 +25,19 @@ export const Logo = styled.div`
     > div img {
         max-width: 100%;
     }
+
+    @media (max-width: 768px){
+        > div img {
+            width: 70%;
+            padding-top: 10rem;
+        };
+    }
 `
 export const Form = styled.div`
     width: 100%;
-    
+
     > form {
-        max-width: 48rem;
+        max-width: 42rem;
         height: 45rem;
 
         > h2 {
@@ -51,5 +62,15 @@ export const Form = styled.div`
             font-size: 1.4rem;
             color: ${({ theme }) => theme.COLORS.WHITE};
         }   
+    }
+
+    @media (max-width: 768px){
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        > form {
+            width: 70%;
+        }
     }
 `
