@@ -7,25 +7,32 @@ export const SignIn = () => {
     return (
         <Container>
             <Logo>
-                <img src={logo} alt="Logo dos Bombeiros" />
+                <div>
+                    <img src={logo} alt="Logo dos Bombeiros" />
+                </div>
             </Logo>
             <Form>
-                <h2>Faça login </h2>
-                <InputComponent
-                    id="email"
-                    type="text"
-                    placeholder="Ex: bombeiros@gmail.com"
-                    title="Email"
-                />
-                <InputComponent
-                    id="password"
-                    type="password"
-                    placeholder="********"
-                    title="Senha"
-                />
+                <form>
+                    <h2>Faça login </h2>
+                    <InputComponent
+                        id="email"
+                        type="text"
+                        placeholder="Ex: bombeiros@gmail.com"
+                        title="Email"
+                    />
+                    <InputComponent
+                        id="password"
+                        type="password"
+                        placeholder="********"
+                        title="Senha"
+                    />
 
-                <ButtonComponent title="Entrar" />
-                <a>Crie sua conta</a>
+                    <ButtonComponent 
+                        title="Entrar"
+                        color="YELLOW"
+                    />
+                    <a>Crie sua conta</a>
+                </form>
             </Form>
         </Container>
     );
