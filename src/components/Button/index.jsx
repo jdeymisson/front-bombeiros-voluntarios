@@ -10,7 +10,7 @@ export const ButtonComponent = ({ title, color, handleClick }) => {
             color={color}
             onClick={confirmAction}
         >
-           {title}
+            {title}
         </Container>
     )
 };

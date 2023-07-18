@@ -2,12 +2,13 @@ import { styled } from "styled-components";
 
 export const Container = styled.button`
     width: 100%;
-    height: 48px;
+    height: 40px;
     
-    background: ${({ theme }) => theme.COLORS.YELLOW};
+    background: ${({ theme, color }) => theme.COLORS[color]};
+    
+    color: ${({ theme, color }) => color === "YELLOW" ? theme.COLORS.BLACK : theme.COLORS.WHITE};
+    font-weight: 700;
 
     border: 0;
     border-radius: .8rem;
-
-    font-weight: 700;
 `;
