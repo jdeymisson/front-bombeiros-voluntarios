@@ -8,7 +8,8 @@ export const Container = styled.footer`
     padding: 0 3.2rem;
 
     border-top: 1px solid ${({ theme }) => theme.COLORS.GRAY_300};
-
+    background: ${({ theme }) => theme.COLORS.WHITE};
+    
     display: flex;
     justify-content: flex-end;
     align-items: center;
