@@ -15,14 +15,13 @@ export const Label = styled.label`
 
 export const Input = styled.input`
     width: 100%;
-    min-width: 20rem;
     padding: .8rem;
     background: ${({ theme }) => theme.COLORS.RED_100};
     color: ${({ theme }) => theme.COLORS.WHITE};
 
     border: 0;
     border-radius: .8rem;
-    height: 4.8rem;
+    height: 4rem;
 
     font-size: 1.4rem;
 
