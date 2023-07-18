@@ -1,16 +1,14 @@
 import { Container } from "./styles";
 
-export const ButtonComponent = ({ title, color, handleClick }) => {
-    const confirmAction = () => {
-        handleClick();
-    };
-
-    return(
-        <Container 
+export const ButtonComponent = ({ title, color, loading=false, ...rest }) => {
+    return (
+        <Container  
+            type="button"
+            disabled={loading}
             color={color}
-            onClick={confirmAction}
+            {...rest}
         >
-            {title}
+            { loading ? "Carregando..." : title }
         </Container>
-    )
+    );
 };
