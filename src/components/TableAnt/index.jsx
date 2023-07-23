@@ -4,8 +4,8 @@ import { Container } from "./styles";
 
 export const TableAnt = ({ columns, dataSource }) => {
     return(
-       <Container>
-         <Table  
+      <Container>
+        <Table  
             style={{marginTop: "1.6rem"}}
             bordered
             dataSource={dataSource} 
@@ -19,6 +19,6 @@ export const TableAnt = ({ columns, dataSource }) => {
                 ),
               }}
         />
-       </Container>
+      </Container>
     );
 };

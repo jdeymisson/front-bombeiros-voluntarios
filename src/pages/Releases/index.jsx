@@ -11,6 +11,8 @@ import { Content } from "../../components/Content";
 import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
 import { Menu } from "../../components/Menu";
+import { TextareaComponent } from "../../components/textArea";
+import { ButtonSmall } from "../../components/ButtonSmall";
 
 const data = [
     {
@@ -57,13 +59,13 @@ key: 'address',
 }
 ];
 
-export const Providers = ({ openMenu, setOpenMenu }) => {
+export const Releases = ({ openMenu, setOpenMenu }) => {
     const [openModalActionConfirm, setOpenModalActionConfirm] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState(true);
     const [columns, setColumns] = useState(columns2);
     const [dataSource, setDataSource] = useState(data);
-    const [userId, setUserId] = useState(undefined);        
+    const [userId, setUserId] = useState(undefined);
     
     const handleChangeAdminColumn = (id_user) => {
         return (
@@ -107,7 +109,7 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
     useEffect(() => {
         if(isAdmin) {
             setColumns([...columns, {
-            title: 'teste',
+            title: '',
             dataIndex: 'teste',
             key: 'teste',
             }]);
@@ -127,10 +129,10 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
             />
             <Header />
             <Content 
-                title="Prestadores" 
+                title="Lançamentos" 
             >
                 <ConfirmAction
-                    text="Você realmente deseja excluir esse usuário?"
+                    text="Você realmente deseja excluir esse lançamento?"
                     handleClickCofirm={handleClickCofirm}
                     handleClickCancel={handleClickCancel}
                     openModalActionConfirm={openModalActionConfirm}
@@ -141,30 +143,19 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                         setModalOpen={setModalOpen}
                         modalOpen={modalOpen}
                     >
-                    <h2>JOHNNY DEYMISSON</h2>
-                    <InputComponent
+                    <h2>Novo Lançamento</h2>
+                    <TextareaComponent
                         id="name"
-                        type="text"
-                        placeholder="Ex: Johnny"
+                        placeholder="Ex: Limou a viatura"
                         title="Seu nome"
+                        maxlength={114}
                     />
                     <InputComponent
-                        id="cpf"
-                        type="text"
-                        placeholder="Ex: 333.444.555-52"
-                        title="CPF"
-                    />
-                    <InputComponent
-                        id="email"
-                        type="text"
-                        placeholder="Ex: bombeiros@gmail.com"
-                        title="Email"
-                    />
-                    <InputComponent
-                        id="password"
-                        type="password"
-                        placeholder="********"
-                        title="Senha"
+                        id="hours"
+                        type="number"
+                        placeholder="Ex: 20"
+                        title="Quantidade de horas"
+                        min={0}
                     />
                     <ButtonComponent 
                         title="Salvar" 
@@ -175,6 +166,18 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                 }
                     <InputSearch placeholder="Pesquise pelo usuário" />
                     <div className="btnNewProvider">
+                        <div className="utils">
+                            <ButtonSmall 
+                                title="PDF" 
+                                color="YELLOW"
+                                handleClick={openModal}
+                            />
+                            <ButtonSmall 
+                                title="XLS" 
+                                color="BLACK"
+                                handleClick={openModal}
+                            />
+                        </div>
                         <ButtonComponent 
                             title="Novo" 
                             color="YELLOW"

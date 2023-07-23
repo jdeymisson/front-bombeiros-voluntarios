@@ -37,12 +37,12 @@ export const ConfirmAction = ({ text, handleClickCofirm, handleClickCancel, open
                         <ButtonComponent
                             title="Cancelar" 
                             color="BLACK"
-                            handleClick={handleClickCancel}
+                            onClick={handleClickCancel}
                         />
                         <ButtonComponent 
                             title="Confirmar" 
                             color="YELLOW"
-                            handleClick={handleClickCofirm}
+                            onClick={handleClickCofirm}
                         />
                     </div>
                 </ContentConfirmAction>

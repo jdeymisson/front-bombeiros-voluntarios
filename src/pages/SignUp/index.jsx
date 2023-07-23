@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Container, Form, Logo } from "./styles";
 import { ButtonComponent } from "../../components/Button";
 import { InputComponent } from "../../components/Input";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-bombeiros.png"
 import { api } from "../../services/api";
 import { isValidCPF, isValidEmail } from "../../utils/fieldValidation";
@@ -14,9 +14,10 @@ export const SignUp = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const navigate = useNavigate();
+
     const registerUsers = async (event) => {
         event.preventDefault();
-        
         const cpfIsValid = isValidCPF(cpf);
         const emailIsValid = isValidEmail(email);
 
@@ -45,8 +46,8 @@ export const SignUp = () => {
             const response = await api.post("/users", dados);
             if(response.status === 201) {
                 alert(response.data.message);
+                navigate("/");
             };
-            
         } catch(error) {
             if(error.response.data) {
                 alert(error.response.data.message);
@@ -100,7 +101,6 @@ export const SignUp = () => {
                         onClick={registerUsers}
                         loading={loading}
                     />
-                    <Link to="/">Faça Login</Link>
                 </form>
             </Form>
         </Container>

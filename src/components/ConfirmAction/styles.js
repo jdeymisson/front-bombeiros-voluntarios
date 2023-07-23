@@ -15,7 +15,7 @@ export const Container = styled.div`
 `;
 
 export const ContentConfirmAction = styled.div`
-    width: 32rem;
+    width: 40rem;
     height: 24rem;
 
     background: ${({ theme }) => theme.COLORS.RED};

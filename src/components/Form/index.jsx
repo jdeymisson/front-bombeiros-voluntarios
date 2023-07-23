@@ -1,19 +1,19 @@
 import { useEffect, useRef } from "react";
 import { Container, Form } from "./styles";
 
-export const FormComponent = ({ children, setModalProfileOpen }) => {
+export const FormComponent = ({ children, setModalOpen }) => {
     const innerFormRef = useRef();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
           if (innerFormRef.current && !innerFormRef.current.contains(event.target)) {
-            setModalProfileOpen(false);
+            setModalOpen(false);
           };
         };
     
         const handleKeyPress = (event) => {
           if (event.key === 'Escape') {
-            setModalProfileOpen(false);
+            setModalOpen(false);
           };
         };
     

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { Container } from "./styles";
 import { ButtonComponent } from "../../components/Button";
@@ -11,114 +11,143 @@ import { Content } from "../../components/Content";
 import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
 import { Menu } from "../../components/Menu";
+import { Select } from "../../components/Select";
 
-const data = [
-    {
-        key: "1",
-        name: "Johnny Deymisson",
-        age: 28,
-        address: "253 Nações",
-    },
-    {
-        key: "2",
-        name: "Amanda Maria",
-        age: 24,
-        address: "73 Centro",
-    },
-    {
-        key: "3",
-        name: "John David",
-        age: 31,
-        address: "253 Nações",
-    },
-    {
-        key: "4",
-        name: "Maria Aparecida",
-        age: 53,
-        address: "253 Nações",
-    }
-];
+import { useAuth } from "../../hooks/authProvider";
+import { api } from "../../services/api";
 
 const columns2 = [
 {
-title: 'Name',
+title: 'CPF',
+dataIndex: 'cpf',
+key: 'cpf',
+},
+{
+title: 'Nome',
 dataIndex: 'name',
 key: 'name',
 },
 {
-title: 'Age',
-dataIndex: 'age',
-key: 'age',
-},
-{
-title: 'Address',
-dataIndex: 'address',
-key: 'address',
+title: 'Email',
+dataIndex: 'email',
+key: 'email',
 }
 ];
 
 export const Users = ({ openMenu, setOpenMenu }) => {
     const [openModalActionConfirm, setOpenModalActionConfirm] = useState(false);
-    const [modalProfileOpen, setModalProfileOpen] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
     const [columns, setColumns] = useState(columns2);
-    const [dataSource, setDataSource] = useState(data);
-    const [userId, setUserId] = useState(undefined);
+    const [dataSource, setDataSource] = useState([]);
+    const [cpf, setCpf] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [admin, setAdmin] = useState(false);
+    const [search, setSearch] = useState("");
+    const [idUserAction, setIdUserAction] = useState(undefined);
 
+    const inputRef = useRef();
+
+    const filterSearch = dataSource.filter(user => user.name.toLowerCase().includes(search.toLowerCase()) || user.cpf.includes(search));
+    
+    const { user } = useAuth();
+    
     const handleChangeAdminColumn = (id_user) => {
         return (
             <div className="controll-admin">
-            <FaPen className="pen-edit"  onClick={() => openModalProfile(id_user)}/>
-            <FaTrash className="trash-user" onClick={() => openModalConfirm(id_user)}/>
+                <FaPen className="pen-edit"  onClick={() => openModalProfile(id_user)}/>
+                <FaTrash className="trash-user" onClick={() => openModalConfirm(id_user)}/>
             </div>
         );
     };  
 
-    const openModalConfirm = (id_user) => {
-        setUserId(id_user);
+    const openModalConfirm = async(id_user) => {
         setOpenModalActionConfirm(true);
+        setIdUserAction(id_user);
     };
     
-    const openModalProfile = (id_user) => {
-        setUserId(id_user);
-        setModalProfileOpen(true);
+    const openModalProfile = async(id_user) => {
+        setModalOpen(true);
+        const {data: user} = await api.get(`/users/${id_user}`);
+        setCpf(user.cpf);
+        setName(user.name);
+        setEmail(user.email);
+        setPassword(user.password);
+        setAdmin(user.admin);
+        setIdUserAction(user.id);
     };
 
     const handleClickCofirm = async () => {
-        await deleteUser(userId);
-        setOpenModalActionConfirm(false);
-        setUserId(undefined);
+        await deleteUser();
     };
 
     const handleClickCancel = () => {
-        setUserId(undefined);
         setOpenModalActionConfirm(false);
     };
 
-    const deleteUser = async (id_user) => {
-        console.log(`Usuário de id: ${id_user}, deletado com sucesso!`);
+    const deleteUser = async () => {
+        await api.delete(`/users/${idUserAction}`);
+        fetchData();
+        setOpenModalActionConfirm(false);
     };
 
     const updateUser = async () => {
-        console.log(`Usuário atualizado com sucesso: ${userId}`);
-        setModalProfileOpen(false);
-        setUserId(undefined);
+        try{
+            const response = await api.put("/users", {cpf, name, email, password, admin, idUserAction});
+            
+            if(response.status === 200) {
+                alert(response.data.message)
+            };
+
+            fetchData();
+            setModalOpen(false);
+        } catch(error) {
+            if(error.response) {
+                alert(error.response.data.message);
+            };
+        };
     };
 
-    useEffect(() => {
-        if(isAdmin) {
-            setColumns([...columns, {
-            title: 'teste',
-            dataIndex: 'teste',
-            key: 'teste',
-            }]);
-    
-            data.forEach(usuario => {
-                usuario.teste = handleChangeAdminColumn(usuario.key);
+    const fetchData = async () => {
+        try {
+            const { data } = await api.get("/users");
+            let dataUsers = [];
+        
+            data.forEach((user) => {
+                dataUsers.push({
+                    key: user.id,
+                    cpf: user.cpf,
+                    name: user.name,
+                    email: user.email,
+                });
             });
-        }   setIsAdmin(false);
-            setDataSource(data)
-        }, []);
+
+            if (user.admin) {
+                setColumns([
+                ...columns2,
+                {
+                    title: "",
+                    dataIndex: "admin",
+                    key: "admin",
+                },
+                ]);
+        
+                dataUsers.forEach((user) => {
+                    user.admin = handleChangeAdminColumn(user.key);
+                });
+            };
+        
+            setDataSource(dataUsers);
+        } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+        };
+    };
+    
+    useEffect(() => {
+        inputRef.current.focus();
+        fetchData();
+    }, []);
 
     return(
         <Container openmenu={openMenu.toString()}>
@@ -137,50 +166,70 @@ export const Users = ({ openMenu, setOpenMenu }) => {
                     openModalActionConfirm={openModalActionConfirm}
                 />
 
-                {modalProfileOpen && 
+                {modalOpen && 
                     <FormComponent
-                        setModalProfileOpen={setModalProfileOpen}
-                        modalProfileOpen={modalProfileOpen}
+                        setModalOpen={setModalOpen}
+                        modalOpen={modalOpen}
                     >
-                        <h2>JOHNNY DEYMISSON</h2>
-                        <InputComponent
-                            id="name"
-                            type="text"
-                            placeholder="Ex: Johnny"
-                            title="Seu nome"
-                        />
+                        <h2>{name}</h2>
                         <InputComponent
                             id="cpf"
                             type="text"
                             placeholder="Ex: 333.444.555-52"
                             title="CPF"
+                            value={cpf}
+                            onChange={({ target }) => setCpf(target.value)}
+                        />
+                        <InputComponent
+                            id="name"
+                            type="text"
+                            placeholder="Ex: Johnny"
+                            title="Seu nome"
+                            value={name}
+                            onChange={({ target }) => setName(target.value)}
                         />
                         <InputComponent
                             id="email"
                             type="text"
                             placeholder="Ex: bombeiros@gmail.com"
                             title="Email"
+                            value={email}
+                            onChange={({ target }) => setEmail(target.value)}
                         />
                         <InputComponent
                             id="password"
                             type="password"
                             placeholder="********"
                             title="Senha"
+                            value={password}
+                            onChange={({ target }) => setPassword(target.value)}
+                        />
+                        <Select 
+                            onChange={({ target }) => setAdmin( target.value == 1 ? false : true)}
+                            options={[
+                            {id: 1, description: "Usuário"},
+                            {id: 2, description: "Administrador"},
+                        ]} 
+                            selectedValue={admin}
                         />
                         <ButtonComponent 
                             title="Salvar" 
                             color="YELLOW"
-                            handleClick={updateUser}
+                            onClick={updateUser}
                         />
                     </FormComponent>
                 }
-                    <InputSearch placeholder="Pesquise pelo usuário" />
+                    <InputSearch 
+                        placeholder="Pesquise pelo usuário"
+                        onChange={({ target }) => setSearch(target.value)}
+                        inputRef={inputRef}
+                    />
 
                     <TableAnt 
-                        dataSource={dataSource}
+                        dataSource={search.length ? filterSearch : dataSource}
                         columns={columns}
                         setOpenModalActionConfirm={setOpenModalActionConfirm} 
-                        setModalProfileOpen={setModalProfileOpen}
+                        setModalOpen={setModalOpen}
                     />
             </Content>
             <Footer />

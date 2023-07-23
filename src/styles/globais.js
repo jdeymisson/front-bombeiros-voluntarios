@@ -33,7 +33,7 @@ export default createGlobalStyle`
         transition: filter 0.2s;
     }
 
-    a:hover, button:hover {
-        filter: brightness(0.9);
+    button:hover, button:disabled {
+        filter: brightness(0.8);
     }
 `;

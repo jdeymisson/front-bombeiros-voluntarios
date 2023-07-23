@@ -17,13 +17,12 @@ export const Form = styled.form`
     transform: translate(-50%, -50%);
 
     > h2 {
-        font-size: 3rem;
+        font-size: 2.4rem;
         text-align: center;
         color: ${({ theme }) => theme.COLORS.WHITE};
     }
 
     width: min(40rem, 50vw);
-    height: 52rem;
 
     display: flex;
     flex-direction: column;
@@ -31,7 +30,7 @@ export const Form = styled.form`
     align-items: center;
     gap: 1.6em;
 
-    padding: 2rem 4rem;
+    padding: 3rem 4rem;
 
     background: ${({ theme }) => theme.COLORS.RED};
 

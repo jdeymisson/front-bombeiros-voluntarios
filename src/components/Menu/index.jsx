@@ -1,11 +1,17 @@
-import { useState } from "react";
 import { Container, Logo, Logout, Nav, IconMenu } from "./styles";
 import { FaUserNurse, FaHome, FaUserClock, FaClock, FaPowerOff } from "react-icons/fa"
-import logo2 from "../../assets/logo-2.jpg";
 import logo from "../../assets/logo.png";
 import iconMenu from "../../assets/icon-menu.png";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/authProvider";
 
 export const Menu = ({ openMenu, setOpenMenu }) => {
+    const { signOut } = useAuth();
+
+    const handleSignOut = () => {
+        signOut();
+    }
+
     return(
         <Container>
             <IconMenu openmenu={openMenu.toString()} onClick={() => setOpenMenu(prevState => !prevState)}>
@@ -24,24 +30,34 @@ export const Menu = ({ openMenu, setOpenMenu }) => {
             <Nav>
                 <ul>
                     <li>
-                        <FaHome />
-                        {openMenu && <a>Home</a>}
+                        <Link to="/">
+                            <FaHome />
+                            {openMenu && <span>Home</span>}
+                        </Link>
                     </li>
                     <li>
-                        <FaUserNurse />
-                        {openMenu && <a>Usuários</a>}
+                        <Link to="/users">
+                            <FaUserNurse />
+                            {openMenu && <span>Usuários</span>}
+                        </Link>
                     </li>
                     <li>
-                        <FaUserClock />
-                        {openMenu && <a>Prestadores</a>}
+                        <Link to="/providers">
+                            <FaUserClock />
+                            {openMenu && <span>Prestadores</span>}
+                        </Link>
                     </li>
                     <li>
-                        <FaClock />
-                        {openMenu && <a>Lançamentos</a>}
+                        <Link to="/releases">
+                            <FaClock />
+                            {openMenu && <span to="/releases">Lançamentos</span>}
+                        </Link>
                     </li>
                 </ul>
             </Nav>
-            <Logout>
+            <Logout 
+                to="/"
+                onClick={handleSignOut}>
                 <FaPowerOff />
                 {openMenu && "Sair"}
             </Logout>

@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-
+import { Link } from "react-router-dom";
 export const Container = styled.div`
     grid-area: menu;
 
@@ -76,22 +76,28 @@ export const Nav = styled.nav`
             font-weight: 700;
             color: ${({ theme }) => theme.COLORS.WHITE};
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1.6rem;
-
             height: 4rem;
             transition: all .2s ease;
 
             padding: .8rem;
             border-radius: .8rem;
 
-            a {
+            span {
                 width: 100%;
+                color: ${({ theme }) => theme.COLORS.WHITE};
+                padding: 8px;
             }
 
-            > svg {
+            a {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                gap: 1.6rem;
+                align-items: center;
+                justify-content: center;
+            }
+
+            > a svg {
                 width: 2.4rem;
                 height: 2.4rem;
                 fill: ${({ theme }) => theme.COLORS.YELLOW};
@@ -99,13 +105,15 @@ export const Nav = styled.nav`
 
             &:hover {
                 background: ${({ theme }) => theme.COLORS.WHITE};
-                color: ${({ theme }) => theme.COLORS.BLACK};
+                > a span {
+                    color:  ${({ theme }) => theme.COLORS.BLACK}
+                }
             }
         }
     }
 `;
 
-export const Logout = styled.a`
+export const Logout = styled(Link)`
     grid-area: logout;
     display: flex;
     align-items: center;
@@ -113,6 +121,7 @@ export const Logout = styled.a`
     gap: .8rem;
     width: 100%;
     height: 100%;
+    color: ${({ theme }) => theme.COLORS.BLACK};
 
     font-size: 1.2rem;
     font-weight: bold;
