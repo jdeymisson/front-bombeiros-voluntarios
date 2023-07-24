@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { Container } from "./styles";
 import { ButtonComponent } from "../../components/Button";
@@ -12,69 +12,56 @@ import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
 import { Menu } from "../../components/Menu";
 
-const data = [
-    {
-        key: "1",
-        name: "Johnny Deymisson",
-        age: 28,
-        address: "253 Nações",
-    },
-    {
-        key: "2",
-        name: "Amanda Maria",
-        age: 24,
-        address: "73 Centro",
-    },
-    {
-        key: "3",
-        name: "John David",
-        age: 31,
-        address: "253 Nações",
-    },
-    {
-        key: "4",
-        name: "Maria Aparecida",
-        age: 53,
-        address: "253 Nações",
-    }
-];
-
 const columns2 = [
-{
-title: 'Name',
-dataIndex: 'name',
-key: 'name',
-},
-{
-title: 'Age',
-dataIndex: 'age',
-key: 'age',
-},
-{
-title: 'Address',
-dataIndex: 'address',
-key: 'address',
-}
+    {
+        title: 'CPF',
+        dataIndex: 'cpf',
+        key: 'cpf'
+    },
+    {
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name'
+    },
+    {
+        title: 'Origem',
+        dataIndex: 'origin',
+        key: 'origin'
+    },
+    {
+        title: 'Horas',
+        dataIndex: 'hours',
+        key: 'hours'
+    }
 ];
 
 export const Providers = ({ openMenu, setOpenMenu }) => {
     const [openModalActionConfirm, setOpenModalActionConfirm] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(true);
     const [columns, setColumns] = useState(columns2);
-    const [dataSource, setDataSource] = useState(data);
-    const [userId, setUserId] = useState(undefined);        
+    const [dataSource, setDataSource] = useState([]);
+    const [cpf, setCpf] = useState("");
+    const [name, setName] = useState("");
+    const [origin, setOrigin] = useState("");
+    const [hours, setHours] = useState("");
+    const [search, setSearch] = useState("");
+    const [idUserAction, setIdUserAction] = useState(undefined);
+
+    const inputRef = useRef();
+
+    const filterSearch = dataSource.filter(user => user.name.toLowerCase().includes(search.toLowerCase()) || user.cpf.includes(search));
     
-    const handleChangeAdminColumn = (id_user) => {
+    const handleChangeAdminColumn = (id_provider) => {
         return (
             <div className="controll-admin">
-                <FaTrash className="trash-user" onClick={() => openModalConfirm(id_user)}/>
+                <FaPen className="pen-edit"  onClick={() => openModalProfile(id_provider)}/>
+                <FaTrash className="trash-user" onClick={() => openModalConfirm(id_provider)}/>
             </div>
         );
-    };  
+    }; 
 
-    const openModalConfirm = (id_user) => {
-        setUserId(id_user);
+    const openModalConfirm = (id_provider) => {
+        setUserId(id_provider);
         setOpenModalActionConfirm(true);
     };
     
@@ -99,25 +86,51 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
     };
 
     const salvar = async () => {
-        console.log(`Usuário atualizado com sucesso: ${userId}`);
+        
         setModalOpen(false);
         setUserId(undefined);
     };
 
-    useEffect(() => {
-        if(isAdmin) {
-            setColumns([...columns, {
-            title: 'teste',
-            dataIndex: 'teste',
-            key: 'teste',
-            }]);
     
-            data.forEach(usuario => {
-                usuario.teste = handleChangeAdminColumn(usuario.key);
+    const fetchData = async () => {
+        try {
+            const { data } = await api.get("/users");
+            let dataUsers = [];
+        
+            data.forEach((user) => {
+                dataUsers.push({
+                    key: user.id,
+                    cpf: user.cpf,
+                    name: user.name,
+                    email: user.email,
+                });
             });
-        }   setIsAdmin(false);
-            setDataSource(data)
-        }, []);
+
+            if (user.admin) {
+                setColumns([
+                ...columns2,
+                {
+                    title: "",
+                    dataIndex: "admin",
+                    key: "admin",
+                },
+                ]);
+        
+                dataUsers.forEach((user) => {
+                    user.admin = handleChangeAdminColumn(user.key);
+                });
+            };
+        
+            setDataSource(dataUsers);
+        } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+        };
+    };
+
+    useEffect(() => {
+        inputRef.current.focus();
+        fetchData();
+    }, []);
 
     return(
         <Container openmenu={openMenu.toString()}>
@@ -127,10 +140,10 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
             />
             <Header />
             <Content 
-                title="Prestadores" 
+                title="Prestadores de serviços" 
             >
                 <ConfirmAction
-                    text="Você realmente deseja excluir esse usuário?"
+                    text="Você realmente deseja excluir esse prestador?"
                     handleClickCofirm={handleClickCofirm}
                     handleClickCancel={handleClickCancel}
                     openModalActionConfirm={openModalActionConfirm}
@@ -141,7 +154,7 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                         setModalOpen={setModalOpen}
                         modalOpen={modalOpen}
                     >
-                    <h2>JOHNNY DEYMISSON</h2>
+                    <h2>{name}</h2>
                     <InputComponent
                         id="name"
                         type="text"
@@ -169,7 +182,7 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                     <ButtonComponent 
                         title="Salvar" 
                         color="YELLOW"
-                        handleClick={salvar}
+                        onClick={salvar}
                     />
                     </FormComponent>
                 }
@@ -178,7 +191,7 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                         <ButtonComponent 
                             title="Novo" 
                             color="YELLOW"
-                            handleClick={openModal}
+                            onClick={openModal}
                         />
                     </div>
                     <TableAnt 
