@@ -12,26 +12,29 @@ import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
 import { Menu } from "../../components/Menu";
 
+import { useAuth } from "../../hooks/authProvider";
+import { api } from "../../services/api";
+
 const columns2 = [
     {
         title: 'CPF',
         dataIndex: 'cpf',
-        key: 'cpf'
+        key: 'cpf',
     },
     {
-        title: 'Name',
+        title: 'Nome',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
     },
     {
         title: 'Origem',
-        dataIndex: 'origin',
-        key: 'origin'
+        dataIndex: 'origen',
+        key: 'origen',
     },
     {
         title: 'Horas',
         dataIndex: 'hours',
-        key: 'hours'
+        key: 'hours',
     }
 ];
 
@@ -45,11 +48,13 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
     const [origin, setOrigin] = useState("");
     const [hours, setHours] = useState("");
     const [search, setSearch] = useState("");
-    const [idUserAction, setIdUserAction] = useState(undefined);
+    const [idProvider, setIdProvider] = useState(undefined);
 
     const inputRef = useRef();
 
     const filterSearch = dataSource.filter(user => user.name.toLowerCase().includes(search.toLowerCase()) || user.cpf.includes(search));
+    
+    const { user } = useAuth();
     
     const handleChangeAdminColumn = (id_provider) => {
         return (
@@ -58,51 +63,90 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                 <FaTrash className="trash-user" onClick={() => openModalConfirm(id_provider)}/>
             </div>
         );
-    }; 
+    };  
 
-    const openModalConfirm = (id_provider) => {
-        setUserId(id_provider);
+    const openModalConfirm = async(id_provider) => {
         setOpenModalActionConfirm(true);
+     setIdProvider(id_provider);
     };
     
-    const openModal = (id_user) => {
-        setUserId(id_user);
+    const openModalProfile = async(id_provider) => {
         setModalOpen(true);
+
+       if(typeof id_provider == "number"){
+        const {data: provider} = await api.get(`/providers/${id_provider}`);
+
+        setIdProvider(id_provider);
+        setCpf(provider.cpf);
+        setName(provider.name);
+        setOrigin(provider.origin);
+        setHours(provider.hours);
+        setIdProvider(provider.id);
+       };
     };
 
     const handleClickCofirm = async () => {
-        await deleteProvider(userId);
-        setOpenModalActionConfirm(false);
-        setUserId(undefined);
+        await deleteUser();
     };
 
     const handleClickCancel = () => {
-        setUserId(undefined);
         setOpenModalActionConfirm(false);
     };
 
-    const deleteProvider = async (id_user) => {
-        console.log(`Usuário de id: ${id_user}, deletado com sucesso!`);
+    const deleteUser = async () => {
+        await api.delete(`/providers/${idProvider}`);
+        fetchData();
+        setOpenModalActionConfirm(false);
     };
-
-    const salvar = async () => {
-        
-        setModalOpen(false);
-        setUserId(undefined);
-    };
-
     
+    useEffect(() => {
+        if(!modalOpen) {
+            setCpf("");
+            setName("");
+            setOrigin("");
+            setHours(0);
+            setIdProvider("");
+        };
+
+    }, [modalOpen])
+
+    const salvarProvider = async () => {
+        try{
+            if(cpf && name && origin && hours && idProvider === ""){
+                const response = await api.post("/providers", {cpf, name, origin, hours, idProvider});
+    
+                if(response.status === 201) {
+                    alert(response.data.message)
+                };
+            } else {
+                const response = await api.put("/providers", {cpf, name, origin, hours, idProvider});
+            
+                if(response.status === 200) {
+                    alert(response.data.message)
+                };    
+            }
+
+            fetchData();
+            setModalOpen(false);
+        } catch(error) {
+            if(error.response) {
+                alert(error.response.data.message);
+            };
+        };
+    };
+
     const fetchData = async () => {
         try {
-            const { data } = await api.get("/users");
-            let dataUsers = [];
+            const { data } = await api.get("/providers");
+            let dataProviders = [];
         
-            data.forEach((user) => {
-                dataUsers.push({
-                    key: user.id,
-                    cpf: user.cpf,
-                    name: user.name,
-                    email: user.email,
+            data.forEach((provider) => {
+                dataProviders.push({
+                    key: provider.id,
+                    cpf: provider.cpf,
+                    name: provider.name,
+                    origin: provider.origin,
+                    hours: provider.hours
                 });
             });
 
@@ -116,17 +160,17 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                 },
                 ]);
         
-                dataUsers.forEach((user) => {
-                    user.admin = handleChangeAdminColumn(user.key);
+                dataProviders.forEach((provider) => {
+                    provider.admin = handleChangeAdminColumn(provider.key);
                 });
             };
         
-            setDataSource(dataUsers);
+            setDataSource(dataProviders);
         } catch (error) {
         console.error("Erro ao buscar dados:", error);
         };
     };
-
+    
     useEffect(() => {
         inputRef.current.focus();
         fetchData();
@@ -140,8 +184,7 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
             />
             <Header />
             <Content 
-                title="Prestadores de serviços" 
-            >
+                title="Prestadores">
                 <ConfirmAction
                     text="Você realmente deseja excluir esse prestador?"
                     handleClickCofirm={handleClickCofirm}
@@ -154,48 +197,62 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                         setModalOpen={setModalOpen}
                         modalOpen={modalOpen}
                     >
-                    <h2>{name}</h2>
-                    <InputComponent
-                        id="name"
-                        type="text"
-                        placeholder="Ex: Johnny"
-                        title="Seu nome"
-                    />
-                    <InputComponent
-                        id="cpf"
-                        type="text"
-                        placeholder="Ex: 333.444.555-52"
-                        title="CPF"
-                    />
-                    <InputComponent
-                        id="email"
-                        type="text"
-                        placeholder="Ex: bombeiros@gmail.com"
-                        title="Email"
-                    />
-                    <InputComponent
-                        id="password"
-                        type="password"
-                        placeholder="********"
-                        title="Senha"
-                    />
-                    <ButtonComponent 
-                        title="Salvar" 
-                        color="YELLOW"
-                        onClick={salvar}
-                    />
+                        <h2>{name}</h2>
+                        <InputComponent
+                            id="cpf"
+                            type="text"
+                            placeholder="Ex: 333.444.555-52"
+                            title="CPF"
+                            value={cpf}
+                            onChange={({ target }) => setCpf(target.value)}
+                        />
+                        <InputComponent
+                            id="name"
+                            type="text"
+                            placeholder="Ex: Johnny"
+                            title="Nome"
+                            value={name}
+                            onChange={({ target }) => setName(target.value)}
+                        />
+                        <InputComponent
+                            id="origin"
+                            type="text"
+                            placeholder="Presídio"
+                            title="Origem"
+                            value={origin}
+                            onChange={({ target }) => setOrigin(target.value)}
+                        />
+                        <InputComponent
+                            id="hours"
+                            type="number"
+                            title="Horas"
+                            value={hours}
+                            onChange={({ target }) => setHours(target.value)}
+                            min={0}
+                        />
+
+                        <ButtonComponent 
+                            title="Salvar" 
+                            color="YELLOW"
+                            onClick={salvarProvider}
+                        />
                     </FormComponent>
                 }
-                    <InputSearch placeholder="Pesquise pelo usuário" />
-                    <div className="btnNewProvider">
+                    <InputSearch 
+                        placeholder="Pesquise pelo usuário"
+                        onChange={({ target }) => setSearch(target.value)}
+                        inputRef={inputRef}
+                    />
+                    {user.admin && <div className="btnNewProvider">
                         <ButtonComponent 
                             title="Novo" 
                             color="YELLOW"
-                            onClick={openModal}
+                            onClick={openModalProfile}
                         />
-                    </div>
+                    </div>}
+
                     <TableAnt 
-                        dataSource={dataSource}
+                        dataSource={search.length ? filterSearch : dataSource}
                         columns={columns}
                         setOpenModalActionConfirm={setOpenModalActionConfirm} 
                         setModalOpen={setModalOpen}
