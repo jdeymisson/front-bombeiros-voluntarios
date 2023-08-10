@@ -71,3 +71,16 @@ export const isValidDate = (year, month, day) => {
 
     return false;
 }
+
+export const validadeEntryAndExit = (entry, exit) => {
+    if(entry === "" || exit === "") {
+        throw new Error("Verifique os campos de entrada e saída, eles precisam ser preenchidos!");
+    };
+
+    const entryDate = new Date(entry);
+    const exitDate = new Date(exit);
+    
+    if(entryDate > exitDate) {
+        throw new Error("Entrada não pode ser maior que a saída!");
+    };
+};

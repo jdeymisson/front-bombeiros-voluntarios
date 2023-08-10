@@ -1,14 +1,10 @@
 import { Container } from "./styles";
 
-export const ButtonSmall = ({ title, color, handleClick }) => {
-    const confirmAction = () => {
-        handleClick();
-    };
-
+export const ButtonSmall = ({ title, color, ...rest }) => {
     return(
         <Container 
             color={color}
-            onClick={confirmAction}
+            {...rest}
         >
             {title}
         </Container>

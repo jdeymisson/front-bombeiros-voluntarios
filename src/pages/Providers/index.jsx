@@ -5,7 +5,7 @@ import { ButtonComponent } from "../../components/Button";
 import { InputComponent } from "../../components/Input";
 import { FormComponent } from "../../components/Form";
 import { ConfirmAction } from "../../components/ConfirmAction";
-import { InputSearch } from "../../components/InputSeatch";
+import { InputSearch } from "../../components/InputSearch";
 import { TableAnt } from "../../components/TableAnt";
 import { Content } from "../../components/Content";
 import { Footer } from "../../components/Footer";
@@ -28,8 +28,8 @@ const columns2 = [
     },
     {
         title: 'Origem',
-        dataIndex: 'origen',
-        key: 'origen',
+        dataIndex: 'origin',
+        key: 'origin',
     },
     {
         title: 'Horas',
@@ -110,7 +110,7 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
 
     }, [modalOpen])
 
-    const salvarProvider = async () => {
+    const saveProvider = async () => {
         try{
             if(cpf && name && origin && hours && idProvider === ""){
                 const response = await api.post("/providers", {cpf, name, origin, hours, idProvider});
@@ -234,11 +234,11 @@ export const Providers = ({ openMenu, setOpenMenu }) => {
                         <ButtonComponent 
                             title="Salvar" 
                             color="YELLOW"
-                            onClick={salvarProvider}
+                            onClick={saveProvider}
                         />
                     </FormComponent>
                 }
-                    <InputSearch 
+                    <InputSearch
                         placeholder="Pesquise pelo usuário"
                         onChange={({ target }) => setSearch(target.value)}
                         inputRef={inputRef}

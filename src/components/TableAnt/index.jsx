@@ -2,11 +2,11 @@
 import { Table, Empty } from "antd";
 import { Container } from "./styles";
 
-export const TableAnt = ({ columns, dataSource }) => {
+export const TableAnt = ({ columns, dataSource, ...rest }) => {
     return(
-      <Container>
-        <Table  
-            style={{marginTop: "1.6rem"}}
+      <Container {...rest}>
+        <Table
+            style={{marginTop: "1.6rem" }}
             bordered
             dataSource={dataSource} 
             columns={columns}

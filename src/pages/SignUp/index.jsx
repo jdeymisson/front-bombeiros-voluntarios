@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Container, Form, Logo } from "./styles";
 import { ButtonComponent } from "../../components/Button";
 import { InputComponent } from "../../components/Input";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-bombeiros.png"
 import { api } from "../../services/api";
 import { isValidCPF, isValidEmail } from "../../utils/fieldValidation";
@@ -101,6 +101,7 @@ export const SignUp = () => {
                         onClick={registerUsers}
                         loading={loading}
                     />
+                    <Link to="/">Possuo uma conta</Link>
                 </form>
             </Form>
         </Container>

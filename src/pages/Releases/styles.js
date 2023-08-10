@@ -14,7 +14,6 @@ export const Container = styled.div`
     transition: grid-template-columns 0.3s linear;
     background: ${({ theme }) => theme.COLORS.GRAY_100};
 
-
     .btnNewProvider {
         width: 100%;
         margin-top: 1.6rem;
@@ -25,5 +24,15 @@ export const Container = styled.div`
         > button {
             width: 10rem;
         }
+    }
+
+    .totalization {
+        margin: 1.6rem 0;
+        color: ${({ theme }) => theme.COLORS.BLACK};
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        font-size: 1.2rem;
+        gap: .8rem;
     }
 `;

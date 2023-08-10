@@ -13,6 +13,12 @@ export const Container = styled.header`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    @media print {
+     * {
+            display: none;
+    }
+}
 `; 
 
 export const Profile = styled.div`

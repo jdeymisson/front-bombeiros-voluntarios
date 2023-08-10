@@ -38,8 +38,6 @@ export const Form = styled.div`
 
     > form {
         max-width: 42rem;
-    
-
         > h2 {
             font-size: 3rem;
             text-align: center;
@@ -52,7 +50,7 @@ export const Form = styled.div`
         align-items: center;
         gap: 1.6em;
     
-        padding: 2rem 4rem;
+        padding: 4rem;
     
         background: ${({ theme }) => theme.COLORS.RED};
     

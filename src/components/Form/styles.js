@@ -7,7 +7,7 @@ export const Container = styled.div`
         top: 0;
         right: 0;
         background: rgba(0, 0, 0, .5);
-        z-index: 1;
+        z-index: 100;
 `;
 
 export const Form = styled.form`

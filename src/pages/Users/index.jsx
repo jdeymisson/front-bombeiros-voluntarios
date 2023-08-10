@@ -5,7 +5,7 @@ import { ButtonComponent } from "../../components/Button";
 import { InputComponent } from "../../components/Input";
 import { FormComponent } from "../../components/Form";
 import { ConfirmAction } from "../../components/ConfirmAction";
-import { InputSearch } from "../../components/InputSeatch";
+import { InputSearch } from "../../components/InputSearch";
 import { TableAnt } from "../../components/TableAnt";
 import { Content } from "../../components/Content";
 import { Footer } from "../../components/Footer";
@@ -17,21 +17,21 @@ import { useAuth } from "../../hooks/authProvider";
 import { api } from "../../services/api";
 
 const columns2 = [
-{
-title: 'CPF',
-dataIndex: 'cpf',
-key: 'cpf',
-},
-{
-title: 'Nome',
-dataIndex: 'name',
-key: 'name',
-},
-{
-title: 'Email',
-dataIndex: 'email',
-key: 'email',
-}
+    {
+        title: 'CPF',
+        dataIndex: 'cpf',
+        key: 'cpf',
+    },
+    {
+        title: 'Nome',
+        dataIndex: 'name',
+        key: 'name',
+    },
+    {
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
+    }
 ];
 
 export const Users = ({ openMenu, setOpenMenu }) => {
@@ -63,8 +63,12 @@ export const Users = ({ openMenu, setOpenMenu }) => {
     };  
 
     const openModalConfirm = async(id_user) => {
-        setOpenModalActionConfirm(true);
-        setIdUserAction(id_user);
+        if(user.id !== id_user){
+            setOpenModalActionConfirm(true);
+            setIdUserAction(id_user);
+        } else {
+            alert("Não é possível excluir seu próprio usuário!");
+        };
     };
     
     const openModalProfile = async(id_user) => {
@@ -87,9 +91,9 @@ export const Users = ({ openMenu, setOpenMenu }) => {
     };
 
     const deleteUser = async () => {
-        await api.delete(`/users/${idUserAction}`);
-        fetchData();
-        setOpenModalActionConfirm(false);
+            await api.delete(`/users/${idUserAction}`);
+            fetchData();
+            setOpenModalActionConfirm(false);
     };
 
     const updateUser = async () => {
